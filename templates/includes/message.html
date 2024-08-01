@@ -1,0 +1,9 @@
+{% if messages %}
+
+    {% for msg in messages %}
+          <div class="sm:text-lg text-sm divTextAlert {{ msg.tags }}">
+            <p>{{ msg }}</p>
+          </div>
+    {% endfor %}
+
+{% endif %}
