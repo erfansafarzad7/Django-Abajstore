@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-zx*!x_y4boo+qsf)2md=fsb#mj4onv-**6-05_xmvx*179_&&-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.abajstore.ir', 'abajstore.ir']
 
 
 # Application definition
@@ -132,12 +132,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static"
+# ]
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# MEDIA_URL = '/media/'
+
+STATIC_URL = '/static/'
+# STATIC_ROOT = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "static"
+    os.path.join(BASE_DIR, 'static'),
 ]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
 MEDIA_URL = '/media/'
+MEDIA_ROOT = '/home/abajstore/public_html/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -149,3 +159,25 @@ AUTH_USER_MODEL = "accounts.User"
 LOGIN_URL = 'auth:login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+CORS_ALLOWED_ORIGINS = [
+    "https://abajstore.ir",
+    "https://www.abajstore.ir",
+    "http://localhost:8000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_DOMAIN = '.abajstore.ir'
+
+
+CSRF_COOKIE_DOMAIN = '.abajstore.ir'
+CSRF_TRUSTED_ORIGINS = ['https://abajstore.ir', 'https://www.abajstore.ir', 'http://abajstore.ir', 'http://www.abajstore.ir']
+
+
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+
