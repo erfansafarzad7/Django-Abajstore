@@ -12,7 +12,7 @@ class CartItemForm(forms.ModelForm):
 
     class Meta:
         model = CartItem
-        fields = ('quantity',)
+        fields = ('product', 'quantity',)
 
     # def validate_quantity(self, value):
     #     print(value)

@@ -27,6 +27,9 @@ class Cart(models.Model):
     def calculate_total_discount(self):
         return sum(cart.cart_item_discount() for cart in self.cart_items.all())
 
+    def total_quantity(self):
+        return sum(item.quantity for item in self.cart_items.all())
+
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="cart_items", verbose_name='سبد خرید')

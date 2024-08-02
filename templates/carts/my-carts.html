@@ -33,9 +33,11 @@
       </section>
       <section>
         <div class="container text-lowGray px-4 boxBorder rounded-lg mb-5">
-{#          <div class="sm:text-lg text-sm divTextAlert danger">#}
-{#            <p>تعداد درخواستی از مانده انبار بیشتر می باشد.</p>#}
-{#          </div>#}
+        {% if not carts %}
+          <div class="sm:text-lg text-sm divTextAlert danger">
+            <p>سبد خرید شما خالی است</p>
+          </div>
+        {% else %}
           <div class="boxBorder rounded-lg">
             <table class="lg:table hidden w-full">
               <thead>
@@ -59,25 +61,25 @@
               <tbody>
               
               
-              {% for cart in carts %}
+              {% for cart_item in carts %}
                 <tr class="odd:bg-lowerGray">
                   <td class="text-sm px-4">{{ forloop.counter }}</td>
                   <td class="text-sm px-4">
-                    <a href="{% url 'products:product_detail' cart.product.id %}">
+                    <a href="{% url 'products:product_detail' cart_item.product.id %}">
                       <img
-                        src="{{ cart.product.cover_image.url }}"
+                        src="{{ cart_item.product.cover_image.url }}"
                         alt="xxx"
                         class="max-w-[80px] max-y-[100px] aspect-[16/9] object-contain"
                       />
                     </a>
                   </td>
-                  <td class="text-sm px-4">{{ cart.product.name }}</td>
+                  <td class="text-sm px-4">{{ cart_item.product.name }}</td>
                   <td class="text-sm px-4">
                       
                       
                       <form method="post" action="{% url 'carts:update_cartitem' %}">
                           {% csrf_token %}
-                              <input type="hidden" name="cartitem_id" value="{{ cart.id }}">
+                              <input type="hidden" name="cartitem_id" value="{{ cart_item.id }}">
                     <div
                       class="flex pcsProduct bg-whiteColor justify-between p-2 max-w-[200px] w-full rounded-lg gap-2 boxBorder"
                     >
@@ -88,7 +90,7 @@
                         type="text"
                         class="bg-[transparent] text-center w-full outline-none"
                         name="asd"
-                        value="{{ cart.quantity }}"
+                        value="{{ cart_item.quantity }}"
                       />
                       <button type="submit" name="action" value="decrease">
                         <i class="text-lg fa fa-minus"></i>
@@ -100,15 +102,15 @@
                       
                   </td>
                   <td class="text-sm px-4">
-                    {{ cart.product.discounted_price }}
+                    {{ cart_item.product.discounted_price }}
                     <span>تومان</span>
                   </td>
                   <td class="text-sm px-4">
-                    {{ cart.cart_item_discounted_price }}
+                    {{ cart_item.cart_item_discounted_price }}
                     <span>تومان</span>
                   </td>
                   <td class="text-sm">
-                    <a href="#" class="hover:text-primary"
+                    <a href="{% url 'carts:remove' cart_item.id %}" class="hover:text-primary"
                       ><i class="fa fa-trash fa-lg"></i
                     ></a>
                   </td>
@@ -123,41 +125,50 @@
           
           
             <ul class="lg:hidden flex gap-2 flex-col">
+                
+                {% for cart_item in carts %}
               <li class="p-2 odd:bg-lowerGray flex gap-2 flex-col">
                 <div class="flex justify-between items-center py-2">
                   <span>ردیف</span>
-                  <span>234</span>
+                  <span>{{ forloop.counter }}</span>
                 </div>
                 <div class="flex justify-between items-center py-2">
                   <span>نام محصول</span>
-                  <span>234</span>
+                  <span>{{ cart_item.product.name }}</span>
                 </div>
+                  
                 <div class="flex justify-between items-center py-2">
                   <span>تعداد</span>
                   <div>
+                      <form method="post" action="{% url 'carts:update_cartitem' %}">
+                      {% csrf_token %}
                     <div
                       class="pcsProduct bg-whiteColor flex justify-between p-2 max-w-[150px] w-full rounded-lg gap-2 boxBorder"
                     >
-                      <a href="#" type="button">
+                      <button type="submit" name="action" value="increase">
                         <i class="text-lg fa fa-plus"></i>
-                      </a>
+                      </button>
                       <input
                         type="text"
                         class="bg-[transparent] text-center w-full outline-none"
                         name="asd"
-                        value="0"
+                        value={{ cart_item.quantity }}
                       />
-                      <a href="#" type="button">
+                      <button type="submit" name="action" value="decrease">
                         <i class="text-lg fa fa-minus"></i>
-                      </a>
+                      </button>
                     </div>
                     <span class="text-sm text-end w-full block">عدد</span>
+                          </form>
                   </div>
                 </div>
+                  
+                  
+                  
                 <div class="flex justify-between items-center py-2">
                   <span>قیمت</span>
                   <span class="text-sm">
-                    18,000
+                    {{ cart_item.product.discounted_price }}
                     <span>تومان</span>
                   </span>
                 </div>
@@ -165,7 +176,7 @@
                 <div class="flex justify-between items-center py-2">
                   <span>جمع</span>
                   <span class="text-sm">
-                    18,000
+                    {{ cart_item.cart_item_discounted_price }}
                     <span>تومان</span>
                   </span>
                 </div>
@@ -173,123 +184,19 @@
                 <div class="flex justify-between items-center py-2">
                   <span></span>
                   <span
-                    ><a href="#" class="hover:text-primary"
+                    ><a href="{% url 'carts:remove' cart_item.id %}" class="hover:text-primary"
                       ><i class="fa fa-trash fa-lg"></i></a
                   ></span>
                 </div>
               </li>
-              <li class="p-2 odd:bg-lowerGray flex gap-2 flex-col">
-                <div class="flex justify-between items-center py-2">
-                  <span>ردیف</span>
-                  <span>234</span>
-                </div>
-                <div class="flex justify-between items-center py-2">
-                  <span>نام محصول</span>
-                  <span>234</span>
-                </div>
-                <div class="flex justify-between items-center py-2">
-                  <span>تعداد</span>
-                  <div>
-                    <div
-                      class="pcsProduct bg-whiteColor flex justify-between p-2 max-w-[150px] w-full rounded-lg gap-2 boxBorder"
-                    >
-                      <a href="#" type="button">
-                        <i class="text-lg fa fa-plus"></i>
-                      </a>
-                      <input
-                        type="text"
-                        class="bg-[transparent] text-center w-full outline-none"
-                        name="asd"
-                        value="0"
-                      />
-                      <a href="#" type="button">
-                        <i class="text-lg fa fa-minus"></i>
-                      </a>
-                    </div>
-                    <span class="text-sm text-end w-full block">عدد</span>
-                  </div>
-                </div>
-                <div class="flex justify-between items-center py-2">
-                  <span>قیمت</span>
-                  <span class="text-sm">
-                    18,000
-                    <span>تومان</span>
-                  </span>
-                </div>
-
-                <div class="flex justify-between items-center py-2">
-                  <span>جمع</span>
-                  <span class="text-sm">
-                    18,000
-                    <span>تومان</span>
-                  </span>
-                </div>
-
-                <div class="flex justify-between items-center py-2">
-                  <span></span>
-                  <span
-                    ><a href="#" class="hover:text-primary"
-                      ><i class="fa fa-trash fa-lg"></i></a
-                  ></span>
-                </div>
-              </li>
-              <li class="p-2 odd:bg-lowerGray flex gap-2 flex-col">
-                <div class="flex justify-between items-center py-2">
-                  <span>ردیف</span>
-                  <span>234</span>
-                </div>
-                <div class="flex justify-between items-center py-2">
-                  <span>نام محصول</span>
-                  <span>234</span>
-                </div>
-                <div class="flex justify-between items-center py-2">
-                  <span>تعداد</span>
-                  <div>
-                    <div
-                      class="pcsProduct bg-whiteColor flex justify-between p-2 max-w-[150px] w-full rounded-lg gap-2 boxBorder"
-                    >
-                      <a href="#" type="button">
-                        <i class="text-lg fa fa-plus"></i>
-                      </a>
-                      <input
-                        type="text"
-                        class="bg-[transparent] text-center w-full outline-none"
-                        name="asd"
-                        value="0"
-                      />
-                      <a href="#" type="button">
-                        <i class="text-lg fa fa-minus"></i>
-                      </a>
-                    </div>
-                    <span class="text-sm text-end w-full block">عدد</span>
-                  </div>
-                </div>
-                <div class="flex justify-between items-center py-2">
-                  <span>قیمت</span>
-                  <span class="text-sm">
-                    18,000
-                    <span>تومان</span>
-                  </span>
-                </div>
-
-                <div class="flex justify-between items-center py-2">
-                  <span>جمع</span>
-                  <span class="text-sm">
-                    18,000
-                    <span>تومان</span>
-                  </span>
-                </div>
-
-                <div class="flex justify-between items-center py-2">
-                  <span></span>
-                  <span
-                    ><a href="#" class="hover:text-primary"
-                      ><i class="fa fa-trash fa-lg"></i></a
-                  ></span>
-                </div>
-              </li>
+                {% endfor %}
+                
             </ul>
           </div>
+        
+        
+        
+        
           <div class="flex justify-end py-2">
             <div class="md:w-1/2 w-full flex flex-col gap-4">
               <h1 class="flex flex-col gap-1">
@@ -311,8 +218,15 @@
                 <div class="flex justify-between p-2">
                   <span>مبلغ قابل پرداخت:</span>
                   <p>
-                    <span>{{ cart.calculate_total_price }}</span>
+                    <span>{{ cart.calculate_total_discounted_price }}</span>
                     <span>تومان</span>
+                  </p>
+                </div>
+                <div class="flex justify-between p-2">
+                  <span>تعداد کل کالا ها:</span>
+                  <p>
+                    <span>{{ cart.total_quantity }}</span>
+                    <span>عدد</span>
                   </p>
                 </div>
                 <div class="flex justify-end">
@@ -325,6 +239,7 @@
               </div>
             </div>
           </div>
+        {% endif %}
         </div>
       </section>
     </main>

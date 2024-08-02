@@ -148,7 +148,7 @@
               <span
                 class="bg-primary p-1 min-w-[15px] text-[10px] h-[20px] absolute -right-[4px] top-4 text-whiteColor rounded-lg text-center flex items-center justify-center"
               >
-                0
+                {{ cart_counter }}
               </span>
             </a>
           </div>
@@ -244,14 +244,14 @@
                 <ul>
                 
                   <li class="sortsTilteLi">
-                    <a href="{% url 'products:product_list' %}?category={{ category.name }}">همه ی موارد این دسته</a>
+                    <a href="{% url 'products:product_list' %}?category={{ category.id }}">همه ی موارد این دسته</a>
                   </li>
                     
                         {% for s_cat in s_category %}
                   
                                 
                               <li class="sortsTilteLi">
-                                <a href="{% url 'products:product_list' %}?category={{ s_cat.name }}">
+                                <a href="{% url 'products:product_list' %}?category={{ s_cat.id }}">
                                     {{ s_cat.name }}
                                 </a>
                               </li>
@@ -374,7 +374,7 @@
                     {% for category, s_category in all_categories.items %}
                         
                         <a
-                          href="{% url 'products:product_list' %}?category={{ category.name }}"
+                          href="{% url 'products:product_list' %}?category={{ category.id }}"
                           value="link_{{ category.id }}"
                           class="w-full block px-4 py-5"
                         >
@@ -394,7 +394,7 @@
                       >
                     
                         <li class="space-y-2">
-                          <a href="{% url 'products:product_list' %}?category={{ s_cat.name }}"
+                          <a href="{% url 'products:product_list' %}?category={{ s_cat.id }}"
                              class="block text-primary">{{ s_cat.name }}</a>
                         </li>
                     

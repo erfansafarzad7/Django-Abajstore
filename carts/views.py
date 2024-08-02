@@ -73,7 +73,7 @@ class CartItemCreateUpdateView(LoginRequiredMixin, View):
 
 
 class CartDeleteView(LoginRequiredMixin, View):
-    def delete(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         cart_id = kwargs.get('pk')
         cart_item = get_object_or_404(CartItem, pk=cart_id)
         cart_item.delete()
