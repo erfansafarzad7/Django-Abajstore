@@ -111,7 +111,7 @@ class OTPForm(forms.Form):
 class ChangePasswordForm(forms.Form):
     current_password = forms.CharField(
         label='رمز عبور فعلی',
-        widget=forms.PasswordInput(attrs={
+        widget=forms.TextInput(attrs={
             'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack '
                      'focus:border-2 focus:border-submitPageColorBorderBlue',
             'placeholder': 'رمز عبور فعلی'
@@ -120,7 +120,7 @@ class ChangePasswordForm(forms.Form):
     )
     new_password = forms.CharField(
         label='رمز عبور جدید',
-        widget=forms.PasswordInput(attrs={
+        widget=forms.TextInput(attrs={
             'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack '
                      'focus:border-2 focus:border-submitPageColorBorderBlue',
             'placeholder': 'رمز عبور جدید'
