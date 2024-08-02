@@ -12,12 +12,35 @@
 
 {% block content %}
     
-    
-    
-    
-    
-    
     <main class="lg:pt-[130px]">
+    
+    
+    
+        {% if not carts %}
+      <section class="my-4">
+        <div
+          class="container py-10 flex select-none items-center justify-center flex-col md:boxBorder rounded-md gap-5"
+        >
+          <div class="flex flex-col items-center">
+            <img
+              class="w-full"
+              src="{% static 'assets/images/empty-cart.svg' %}"
+              alt="xxx"
+            />
+            <h1 class="md:text-2xl text-lg">سبد خرید شما خالی است!</h1>
+          </div>
+          <a
+            href="{% url 'products:product_list' %}"
+            class="bg-redColor mt-16 border-none opacity-80 hover:opacity-100 transition-opacity duration-300 text-whiteColor px-5 py-2 rounded-md"
+            >بازگشت به فروشگاه</a
+          >
+        </div>
+      </section>
+        {% else %}
+            
+            
+            
+            
       <section
         id="hiddenContent"
         class="bg-lowOpacityColorBg items-start hidden fixed z-[9] top-0 right-0 w-full h-screen"
@@ -35,11 +58,6 @@
         <div class="container text-lowGray px-4 boxBorder rounded-lg mb-5">
         
         
-        {% if not carts %}
-          <div class="sm:text-lg text-sm divTextAlert danger">
-            <p>سبد خرید شما خالی است</p>
-          </div>
-        {% else %}
             
             
             
@@ -244,9 +262,9 @@
               </div>
             </div>
           </div>
-        {% endif %}
         </div>
       </section>
+        {% endif %}
     </main>
   
   
