@@ -33,11 +33,16 @@
       </section>
       <section>
         <div class="container text-lowGray px-4 boxBorder rounded-lg mb-5">
+        
+        
         {% if not carts %}
           <div class="sm:text-lg text-sm divTextAlert danger">
             <p>سبد خرید شما خالی است</p>
           </div>
         {% else %}
+            
+            
+            
           <div class="boxBorder rounded-lg">
             <table class="lg:table hidden w-full">
               <thead>
@@ -231,7 +236,7 @@
                 </div>
                 <div class="flex justify-end">
                   <a
-                    href="{% url 'orders:create_order' %}"
+                    href="{% url 'orders:checkout' %}"
                     class="py-2 px-3 w-max bg-redColor opacity-75 hover:opacity-100 transition-all text-[16px] text-whiteColor rounded-lg"
                     >ادامه فرآیند خرید</a
                   >

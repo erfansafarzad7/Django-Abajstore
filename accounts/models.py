@@ -60,10 +60,13 @@ class Address(models.Model):
     receiver_name = models.CharField(_('نام گیرنده'), max_length=50, validators=[persian_characters, ])
     phone_number = models.CharField(_('شماره موبایل گیرنده'), max_length=11,
                                     validators=[persian_phone_number_validation, ])
-    # state = models.CharField(_('استان'), max_length=30, validators=[persian_characters, ])
+    state = models.CharField(_('استان'), max_length=30, validators=[persian_characters, ])
     city = models.CharField(_('شهر'), max_length=30, validators=[persian_characters, ])
     address = models.CharField(_('آدرس'), max_length=30, validators=[persian_address, ])
-    postalcode = models.CharField(_('کد پستی'), max_length=20, validators=[persian_postalcode, ])
+    postalcode = models.CharField(_('کد پستی'), null=True, blank=True, max_length=20, validators=[only_number, ])
     note = models.TextField(_('یادداشت'), blank=True, null=True)
 
     created = jmodels.jDateField(_('تاریخ ایجاد'), auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.city} - {self.address[:25]}'

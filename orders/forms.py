@@ -27,10 +27,20 @@ class OrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = []
+        fields = ['address', ]
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user:
             self.fields['address'].queryset = Address.objects.filter(user=user)
+
+    # def __init__(self, *args, **kwargs):
+    #     user = kwargs.pop('user', None)
+    #     super().__init__(*args, **kwargs)
+    #     if user:
+    #         self.fields['address'].queryset = Address.objects.filter(user=user)
+    #         self.fields['address'].widget.attrs.update({
+    #             'class': 'form-control',
+    #             'placeholder': 'انتخاب آدرس'
+    #         })

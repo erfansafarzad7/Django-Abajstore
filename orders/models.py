@@ -29,9 +29,10 @@ class Order(models.Model):
         ("لغو شده", _("لغو شده")),
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='کاربر')
-    code = models.CharField(_('کد سفارش'), max_length=16, unique=True)
+    code = models.CharField(_('کد سفارش'), max_length=15, unique=True)
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='پروفایل')
     # payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='')
+    send_price = models.PositiveIntegerField(_('هزینه ی ارسال'), default=30_000)
     coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL,null=True, blank=True, verbose_name='کد تخفیف')
     status = models.CharField(_('وضعیت'), max_length=20, choices=ORDER_STATUS, default='در انتظار پرداخت')
 
@@ -46,11 +47,14 @@ class Order(models.Model):
         return str(self.code)
 
     def get_price(self):
-        total_price = sum(item.price for item in self.order_items.all())
+        if self.order_items:
+            total_price = sum(item.price for item in self.order_items.all()) + self.send_price
 
-        if self.coupon:
-            return total_price - (total_price * (self.coupon.value / 100))
-        return total_price
+            if self.coupon:
+                return total_price - (total_price * (self.coupon.value / 100))
+
+            return total_price
+        return 0
 
 
 class OrderItem(models.Model):

@@ -3,7 +3,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from products.models import Product
 from .models import Order, OrderItem
@@ -30,11 +30,11 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         return Order.objects.filter(user=self.request.user)
 
 
-class CreateOrderView(LoginRequiredMixin, CreateView):
+class CheckoutView(LoginRequiredMixin, CreateView):
     model = Order
     form_class = OrderForm
     template_name = 'orders/checkout.html'
-    success_url = reverse_lazy('order_list')
+    success_url = reverse_lazy('orders:order_list')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -44,7 +44,6 @@ class CreateOrderView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         order = form.save(commit=False)
         order.user = self.request.user
-        order.address = self.request.user.address   # ---------------------------------------------<<<<<<<<
         order.code = str(random.randint(10**10, 10**15))
         order.save()
 
@@ -58,12 +57,14 @@ class CreateOrderView(LoginRequiredMixin, CreateView):
                 quantity=item.quantity,
                 price=item.cart_item_discounted_price(),
             )
-            product = Product.objects.get(id=item.product.id)
-            product.quantity -= item.quantity
-            product.save()
             item.delete()
 
-        return redirect('orders:pay_order', kwargs={'order_id': order.id})
+        pay_order_url = reverse('orders:pay_order', kwargs={'order_id': order.id})
+        return redirect(pay_order_url)
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -97,8 +98,10 @@ class PayOrderView(LoginRequiredMixin, View):
             messages.error(request, f'سفارش شما {order.status}.')
             return redirect('order_detail', pk=order.id)
 
+        print(order.get_price())
         # Here you would typically integrate with a payment gateway
         # For this example, we'll just mark the order as paid
+
         order.status = 'پرداخت شده'
         order.save()
 
