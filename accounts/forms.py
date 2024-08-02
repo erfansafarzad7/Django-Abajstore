@@ -1,8 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate
-from django.contrib.auth.password_validation import validate_password
 from utils.validators import persian_phone_number_validation
 from .models import User, OTP, Address
 
@@ -110,109 +108,84 @@ class OTPForm(forms.Form):
         return code
 
 
-#
-# class ChangePasswordForm(SetPasswordForm):
-#     old_password = forms.CharField(
-#         label=_("رمز عبور فعلی"),
-#         strip=False,
-#         widget=forms.PasswordInput(attrs={'autocomplete': 'current-password', 'autofocus': True}),
-#     )
-#
-#     def clean_old_password(self):
-#         old_password = self.cleaned_data["old_password"]
-#         if not self.user.check_password(old_password):
-#             raise ValidationError(
-#                 _("رمز عبور فعلی شما نادرست است. لطفاً دوباره وارد کنید."),
-#                 code='password_incorrect',
-#             )
-#         return old_password
-#
-#
-# class ChangePhoneNumberForm(forms.ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ['phone_number']
-#
-#     def __init__(self, *args, **kwargs):
-#         self.user = kwargs.pop('user', None)
-#         super().__init__(*args, **kwargs)
-#
-#     def clean_phone_number(self):
-#         phone_number = self.cleaned_data['phone_number']
-#         if User.objects.filter(phone_number=phone_number).exclude(pk=self.user.pk).exists():
-#             raise ValidationError(_("این شماره موبایل قبلاً ثبت شده است."))
-#         return phone_number
+class ChangePasswordForm(forms.Form):
+    current_password = forms.CharField(
+        label='رمز عبور فعلی',
+        widget=forms.PasswordInput(attrs={
+            'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack '
+                     'focus:border-2 focus:border-submitPageColorBorderBlue',
+            'placeholder': 'رمز عبور فعلی'
+        }),
+        required=True
+    )
+    new_password = forms.CharField(
+        label='رمز عبور جدید',
+        widget=forms.PasswordInput(attrs={
+            'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack '
+                     'focus:border-2 focus:border-submitPageColorBorderBlue',
+            'placeholder': 'رمز عبور جدید'
+        }),
+        required=True,
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+    def clean_current_password(self):
+        if not self.user.check_password(self.cleaned_data['current_password']):
+            raise ValidationError("رمز عبور فعلی نادرست است.")
+        return self.cleaned_data['current_password']
+
+    def save(self):
+        new_password = self.cleaned_data['new_password']
+        self.user.set_password(new_password)
+        self.user.save()
+        return self.user
+
+
 class UserProfileForm(forms.ModelForm):
     first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'outline-none px-2 py-3 rounded border-2'
-                                               ' border-submitPageColorBorderLowBlack focus:border-2'
-                                               ' focus:border-submitPageColorBorderBlue',
-                                      'placeholder': 'نام'}),
+        widget=forms.TextInput(
+            attrs={'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack'
+                            ' focus:border-2 focus:border-submitPageColorBorderBlue',
+                   'placeholder': 'نام'}), required=False
     )
     last_name = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'outline-none px-2 py-3 rounded border-2 '
-                                               'border-submitPageColorBorderLowBlack focus:border-2 '
-                                               'focus:border-submitPageColorBorderBlue',
-                                      'placeholder': 'نام خانوادگی'}),
+        widget=forms.TextInput(
+            attrs={'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack '
+                            'focus:border-2 focus:border-submitPageColorBorderBlue',
+                   'placeholder': 'نام خانوادگی'}), required=False
     )
     phone_number = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'outline-none px-2 py-3 rounded border-2'
-                                               ' border-submitPageColorBorderLowBlack focus:border-2 '
-                                               'focus:border-submitPageColorBorderBlue',
-                                      'placeholder': 'شماره موبایل'}),
+        widget=forms.TextInput(
+            attrs={'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack '
+                            'focus:border-2 focus:border-submitPageColorBorderBlue',
+                   'placeholder': 'شماره موبایل'}),
     )
     card_number = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'outline-none px-2 py-3 rounded border-2 '
-                                               'border-submitPageColorBorderLowBlack focus:border-2'
-                                               ' focus:border-submitPageColorBorderBlue',
-                                      'placeholder': 'شماره کارت'}),
+        widget=forms.TextInput(
+            attrs={'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack '
+                            'focus:border-2 focus:border-submitPageColorBorderBlue',
+                   'placeholder': 'شماره کارت'}), required=False
     )
     shaba_number = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'outline-none px-2 py-3 rounded border-2 '
-                                               'border-submitPageColorBorderLowBlack focus:border-2 '
-                                               'focus:border-submitPageColorBorderBlue',
-                                      'placeholder': 'شماره شبا'}),
+        widget=forms.TextInput(
+            attrs={'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack '
+                            'focus:border-2 focus:border-submitPageColorBorderBlue',
+                   'placeholder': 'شماره شبا'}), required=False
     )
-
-    current_password = forms.CharField(label='رمز فعلی', widget=forms.PasswordInput(
-        attrs={'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack '
-                        'focus:border-2 focus:border-submitPageColorBorderBlue',
-               'placeholder': 'رمز فعلی'}), required=True)
-
-    password = forms.CharField(label='رمز جدید', widget=forms.PasswordInput(
-        attrs={'class': 'outline-none px-2 py-3 rounded border-2 border-submitPageColorBorderLowBlack'
-                        'focus:border-2 focus:border-submitPageColorBorderBlue',
-               'placeholder': 'رمز جدید'}), required=False, validators=[validate_password, ])
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'phone_number', 'card_number', 'shaba_number', 'current_password', 'password')
+        fields = ('first_name', 'last_name', 'phone_number', 'card_number', 'shaba_number')
 
-    def clean_current_password(self, value):
-        user = authenticate(username=self.instance.phone_number, password=value)
-        if not user:
-            raise ValidationError('رمز عبور فعلی شما اشتباه است!')
-        return value
-
-    def clean_password(self, value):
-        if value:
-            return value
-        return self.instance.password
-
-    def clean_phone_number(self, value):
+    def clean_phone_number(self):
+        value = self.cleaned_data.get('phone_number')
         user = User.objects.filter(phone_number=value).exclude(id=self.instance.id)
         if user.exists():
             raise ValidationError('کاربری با این شماره از قبل وجود دارد!')
         return value
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        password = self.cleaned_data.get('password')
-        if password:
-            user.set_password(password)
-        if commit:
-            user.save()
-        return user
 
 
 class AddressForm(forms.ModelForm):

@@ -1,12 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from django.views.generic import FormView, CreateView, RedirectView, UpdateView, DeleteView, DetailView, ListView
-from .forms import UserCreationForm, OTPForm, ForgetPasswordForm, UserProfileForm, AddressForm, CustomAuthenticationForm
+from django.views.generic import FormView, CreateView, RedirectView, UpdateView, DeleteView, DetailView, ListView, \
+    TemplateView
+from .forms import UserCreationForm, OTPForm, ForgetPasswordForm, UserProfileForm, AddressForm, \
+    CustomAuthenticationForm, ChangePasswordForm
 from .models import User, OTP, Address
 from .mixins import AddressFormMixin
 from datetime import datetime, timedelta
@@ -251,9 +253,8 @@ class ResendOTPView(RedirectView):
         return super().get(request, *args, **kwargs)
 
 
-class UserProfileView(LoginRequiredMixin, UpdateView):
+class UserProfileView(LoginRequiredMixin, TemplateView):
     model = User
-    form_class = UserProfileForm
     template_name = 'accounts/profile.html'
     success_url = reverse_lazy('auth:profile')
     context_object_name = 'profile'
@@ -261,19 +262,54 @@ class UserProfileView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         return self.request.user
 
-    def form_valid(self, form):
-        # user = form.save(commit=False)
-        if 'phone_number' in form.changed_data and form.is_valid():
-            # old_phone_number = user.phone_number
-            self.request.session['user_info'] = {
-                'phone_number': form.cleaned_data['phone_number'],
-                'reason': 'set_new_phone_number'
-            }
-            result = check_delay_and_send_otp(self.request)
-            messages.info(self.request, result)
-            return result
+    def get_form_class(self):
+        if 'change_password' in self.request.POST:
+            return ChangePasswordForm
+        return UserProfileForm
 
-        return super().form_valid(form)
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+        return form_class(self.request.POST or None, instance=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        profile_form = UserProfileForm(request.POST, instance=request.user)
+        password_form = ChangePasswordForm(request.POST, user=request.user)
+
+        if 'update_profile' in request.POST:
+            if profile_form.is_valid():
+                if 'phone_number' in profile_form.changed_data:
+                    request.session['user_info'] = {
+                        'phone_number': profile_form.cleaned_data['phone_number'],
+                        'reason': 'set_new_phone_number'
+                    }
+                    result = check_delay_and_send_otp(request)
+                    messages.info(request, result)
+                    return redirect('auth:verify')
+                else:
+                    profile_form.save()
+                    messages.success(request, 'پروفایل شما با موفقیت به‌روزرسانی شد!')
+                    return redirect(self.success_url)
+            else:
+                messages.error(request, 'خطا در به‌روزرسانی پروفایل. لطفاً دوباره اطلاعات را بررسی کنید.')
+
+        elif 'change_password' in request.POST:
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'رمز عبور شما با موفقیت تغییر یافت!')
+                return redirect(self.success_url)
+            else:
+                messages.error(request, 'خطا در تغییر رمز عبور. لطفاً دوباره اطلاعات را بررسی کنید.')
+
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_form'] = UserProfileForm(instance=self.request.user)
+        context['password_form'] = ChangePasswordForm(user=self.request.user)
+        return context
 
 
 class AddressListView(LoginRequiredMixin, ListView):

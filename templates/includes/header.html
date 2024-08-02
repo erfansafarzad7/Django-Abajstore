@@ -48,7 +48,7 @@
           </a>
         
         
-                  {% if request.user.is_authenticated %}
+{% if request.user.is_authenticated %}
             
         
           <div
@@ -114,16 +114,16 @@
               
               
                 <li>
-{#                    <form method="post" action="{% url 'auth:logout' %}">#}
-{#                        {% csrf_token %}#}
-                  <a
+                    <form method="post" action="{% url 'auth:logout' %}">
+                        {% csrf_token %}
+                  <button
                     type="submit"
                     class="w-full hover:bg-submitPageColorBorderLowBlack flex gap-4 items-center px-4 py-4"
                   >
                     <i class="fa fa-sign-out text-2xl"></i>
                     <p>خروج</p>
-                  </a>
-{#                    </form>#}
+                  </button>
+                    </form>
                 </li>
               
               </ul>
@@ -152,7 +152,15 @@
               </span>
             </a>
           </div>
-                  {% endif %}
+    
+{% else %}
+    
+    <a href="{% url 'auth:login' %}"></a>
+    
+{% endif %}
+        
+        
+        
             
         </div>
       </section>
@@ -296,14 +304,32 @@
               placeholder="جستجو"
             />
           </form>
-            {% if request.user.is_authenticated %}
+        
+        
+        
+{% if request.user.is_authenticated %}
+    
           <a
             href="{% url 'auth:profile' %}"
             class="basis-[10%] text-xl p-2 flex items-center justify-center"
           >
             <i class="far fa-user"></i>
           </a>
+    
+            {% else %}
+    
+          <a
+            href="{% url 'auth:login' %}"
+            class="basis-[10%] text-xl p-2 flex items-center justify-center"
+          >
+            <i class="far fa-user"></i>
+          </a>
+
             {% endif %}
+        
+        
+        
+        
         </div>
       </section>
 

@@ -136,7 +136,7 @@ USE_TZ = True
 # STATICFILES_DIRS = [
 #     BASE_DIR / "static"
 # ]
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+#
 # MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
@@ -161,23 +161,23 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 
-CORS_ALLOWED_ORIGINS = [
-    "https://abajstore.ir",
-    "https://www.abajstore.ir",
-    "http://localhost:8000",
-]
-
-CORS_ALLOW_CREDENTIALS = True
-
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-SESSION_COOKIE_DOMAIN = '.abajstore.ir'
-
-
-CSRF_COOKIE_DOMAIN = '.abajstore.ir'
-CSRF_TRUSTED_ORIGINS = ['https://abajstore.ir', 'https://www.abajstore.ir', 'http://abajstore.ir', 'http://www.abajstore.ir']
-
-
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
+# CORS_ALLOWED_ORIGINS = [
+#     "https://abajstore.ir",
+#     "https://www.abajstore.ir",
+#     "http://localhost:8000",
+# ]
+#
+# CORS_ALLOW_CREDENTIALS = True
+#
+#
+# SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+# SESSION_COOKIE_DOMAIN = '.abajstore.ir'
+#
+#
+# CSRF_COOKIE_DOMAIN = '.abajstore.ir'
+# CSRF_TRUSTED_ORIGINS = ['https://abajstore.ir', 'https://www.abajstore.ir', 'http://abajstore.ir', 'http://www.abajstore.ir']
+#
+#
+# SESSION_COOKIE_SECURE = False
+# CSRF_COOKIE_SECURE = False
 
