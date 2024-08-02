@@ -54,9 +54,9 @@
           <div
             class="grid gap-3 grid-cols-[28px] lg:grid-cols-[28px_10px_28px] grid-rows-[28px] content-center"
           >
-            <button
+            <div
               id="accountSetting"
-              class="lg:flex hidden items-center justify-center relative"
+              class="items-center justify-center relative"
             >
               <i class="text-[20px] far fa-user"></i>
               <i class="fa fa-angle-down"></i>
@@ -101,7 +101,7 @@
                   </a>
                 </li>
                   
-                <li class="">
+                <li>
                   <a
                     href="{% url 'auth:profile' %}"
                     class="w-full hover:bg-submitPageColorBorderLowBlack flex gap-4 items-center px-4 py-4"
@@ -114,11 +114,12 @@
               
               
                 <li>
-                    <form method="post" action="{% url 'auth:logout' %}">
+                    <form class="w-full block hover:bg-submitPageColorBorderLowBlack"
+                            method="post" action="{% url 'auth:logout' %}">
                         {% csrf_token %}
                   <button
                     type="submit"
-                    class="w-full hover:bg-submitPageColorBorderLowBlack flex gap-4 items-center px-4 py-4"
+                    class="flex gap-4 items-center px-4 py-4"
                   >
                     <i class="fa fa-sign-out text-2xl"></i>
                     <p>خروج</p>
@@ -127,7 +128,10 @@
                 </li>
               
               </ul>
-            </button>
+            </div>
+
+              
+              
             <span
               class="border-r-2 lg:inline hidden border-submitPageColorBorderLowBlack"
             >
@@ -154,9 +158,9 @@
           </div>
     
 {% else %}
-    
-    <a href="{% url 'auth:login' %}"></a>
-    
+            <a href="{% url 'auth:login' %}" class="lg:flex hidden text-sm">
+              <span>ورود / ثبت نام</span>
+            </a>
 {% endif %}
         
         
@@ -244,14 +248,14 @@
                 <ul>
                 
                   <li class="sortsTilteLi">
-                    <a href="{% url 'products:product_list' %}?category={{ category.id }}">همه ی موارد این دسته</a>
+                    <a href="{% url 'products:product_list' %}?category={{ category.name }}">همه ی موارد این دسته</a>
                   </li>
                     
                         {% for s_cat in s_category %}
                   
                                 
                               <li class="sortsTilteLi">
-                                <a href="{% url 'products:product_list' %}?category={{ s_cat.id }}">
+                                <a href="{% url 'products:product_list' %}?category={{ s_cat.name }}">
                                     {{ s_cat.name }}
                                 </a>
                               </li>
@@ -374,7 +378,7 @@
                     {% for category, s_category in all_categories.items %}
                         
                         <a
-                          href="{% url 'products:product_list' %}?category={{ category.id }}"
+                          href="{% url 'products:product_list' %}?category={{ category.name }}"
                           value="link_{{ category.id }}"
                           class="w-full block px-4 py-5"
                         >
@@ -394,7 +398,7 @@
                       >
                     
                         <li class="space-y-2">
-                          <a href="{% url 'products:product_list' %}?category={{ s_cat.id }}"
+                          <a href="{% url 'products:product_list' %}?category={{ s_cat.name }}"
                              class="block text-primary">{{ s_cat.name }}</a>
                         </li>
                     

@@ -30,7 +30,8 @@ from carts.forms import CartItemForm
 class ProductFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(field_name='name', lookup_expr='icontains')
     brand = django_filters.CharFilter(field_name='brand', lookup_expr='icontains')
-    category = django_filters.ModelMultipleChoiceFilter(queryset=MainCategory.objects.all())
+    # category = django_filters.ModelMultipleChoiceFilter(queryset=MainCategory.objects.all())
+    category = django_filters.CharFilter(field_name='category__name', lookup_expr='exact', label='نام دسته')
     price_min = django_filters.NumberFilter(field_name='price', lookup_expr='gte', label='حداقل قیمت')
     price_max = django_filters.NumberFilter(field_name='price', lookup_expr='lte', label='حداکثر قیمت')
 
@@ -60,7 +61,7 @@ class ProductListView(FilterView):
     filterset_class = ProductFilter
 
     def get_queryset(self):
-        return Product.available.all().order_by('-created')
+        return Product.available.all()
 
     # def get_queryset(self):
     #     queryset = Product.available.all().order_by('-created')

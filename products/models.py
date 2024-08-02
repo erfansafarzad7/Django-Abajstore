@@ -8,7 +8,7 @@ from .managers import AvailableManager, SpecialOfferManager
 
 class Base(models.Model):
     name = models.CharField(_('نام'), max_length=40, unique=True)
-    image = models.ImageField(_('عکس'), upload_to='category-and-brands/', null=True, blank=True)
+    image = models.ImageField(_('عکس'), upload_to='category-and-brands/')
 
     def __str__(self):
         return self.name
@@ -90,7 +90,7 @@ class Product(models.Model):
     discount = models.PositiveSmallIntegerField(_('تخفیف (%)'), default=0)
     quantity = models.PositiveSmallIntegerField(_('تعداد'), default=1)
 
-    # avg_rate = models.DecimalField(_('امتیاز'), validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], default=0,
+    # avg_rate = models.DecimalField(_('امتیاز'), validators=[MinValueValidator(0.0), MaxValueValidator(5.0)],default=0,
     #                                decimal_places=1, max_digits=2)
 
     description = models.TextField(_('توضیحات'), null=True, blank=True)
@@ -99,7 +99,7 @@ class Product(models.Model):
 
     objects = models.Manager()
     # in_special_category = SpecialCategory()
-    special_offer = SpecialOfferManager()
+    # special_offer = SpecialOfferManager()
     available = AvailableManager()
 
     created = jmodels.jDateField(_('تاریخ ایجاد'), auto_now_add=True)

@@ -131,32 +131,44 @@
                     <p class="hidden text-lowGray">[searched result]</p>
                   </li>
                   <li class="space-y-4">
-                    <div>
-                      <label class="flex gap-2" for="minProductsOnly">
-                        <input
-                          type="checkbox"
-                          class="hidden inputCheckbox"
-                          id="minProductsOnly"
-                          name="checkBoxName"
-                          id=""
-                        />
-                        <div class="customeCheckbox"></div>
-                        فقط محصولات دارای موجودی
-                      </label>
-                    </div>
-                    <div>
-                      <label class="flex gap-2" for="imageProductsOnly">
-                        <input
-                          type="checkbox"
-                          class="hidden inputCheckbox"
-                          id="imageProductsOnly"
-                          name="checkBoxName"
-                          id=""
-                        />
-                        <div class="customeCheckbox"></div>
-                        فقط محصولات دارای تصویر
-                      </label>
-                    </div>
+                      
+{#                    <div>#}
+{#                        <form method="get">#}
+{#                            {{ filter.form.order_by }}#}
+{#                            <button type="submit">مرتب‌سازی</button>#}
+{#                        </form>#}
+{#                        <div class="customeCheckbox"></div>#}
+{#                    </div>#}
+                      
+                      
+                      
+                      
+{#                    <div>#}
+{#                      <label class="flex gap-2" for="minProductsOnly">#}
+{#                        <input#}
+{#                          type="checkbox"#}
+{#                          class="hidden inputCheckbox"#}
+{#                          id="minProductsOnly"#}
+{#                          name="checkBoxName"#}
+{#                          id=""#}
+{#                        />#}
+{#                        <div class="customeCheckbox"></div>#}
+{#                        فقط محصولات دارای موجودی#}
+{#                      </label>#}
+{#                    </div>#}
+{#                    <div>#}
+{#                      <label class="flex gap-2" for="imageProductsOnly">#}
+{#                        <input#}
+{#                          type="checkbox"#}
+{#                          class="hidden inputCheckbox"#}
+{#                          id="imageProductsOnly"#}
+{#                          name="checkBoxName"#}
+{#                          id=""#}
+{#                        />#}
+{#                        <div class="customeCheckbox"></div>#}
+{#                        فقط محصولات دارای تصویر#}
+{#                      </label>#}
+{#                    </div>#}
                   </li>
                 </ul>
               </form>
@@ -254,6 +266,28 @@
                     {{ product.name }}
                   </h3>
                 </a>
+                  
+                  
+                  
+                  
+                    <div class="price">
+                        <div class="text-[12px] flex gap-2">
+                    
+                            {% if product.discount %}
+                          <del class="text-mdGray">
+                            {{ product.price }}
+                            <span>تومان</span>
+                          </del>
+                          <span
+                            class="px-2 text-sm text-whiteColor bg-primary rounded-2xl"
+                            >{{ product.discount }}%</span
+                          >
+                            {% endif %}
+                        </div>
+                    </div>
+              
+              
+              
                 <div
                   class="flex absolute sm:static left-[10px] bottom-[10px] flex-col sm:flex-row sm:items-center items-end sm:w-full justify-between"
                 >

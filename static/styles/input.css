@@ -481,6 +481,26 @@
         color: #fff;
     }
 
+    #addressCont,
+    #selectedLiOptions {
+        max-height: 0;
+        transition: all .5s;
+        overflow: hidden;
+    }
+
+    #addressCont.showListAddres,
+    #selectedLiOptions.showListAddresOption {
+        max-height: 2000px;
+    }
+
+    #addressCont.showListAddres {
+        overflow: auto;
+    }
+
+    #showList.none {
+        display: none;
+    }
+
     @media screen and (width<500) {
 
         .swiper-button-prev,
