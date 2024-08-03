@@ -48,13 +48,16 @@ class Order(models.Model):
 
     def get_price(self):
         if self.order_items:
-            total_price = sum(item.price for item in self.order_items.all()) + self.send_price
+            total_price = sum(item.price for item in self.order_items.all())
 
             if self.coupon:
                 return total_price - (total_price * (self.coupon.value / 100))
 
             return total_price
         return 0
+
+    def get_price_with_send(self):
+        return int(self.get_price() + self.send_price)
 
 
 class OrderItem(models.Model):
