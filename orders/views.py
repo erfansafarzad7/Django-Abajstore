@@ -28,7 +28,7 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'order'
 
     def get_object(self, queryset=None):
-        return Order.objects.get(code=self.kwargs['code'])
+        return Order.objects.get(code=self.kwargs['order_code'])
 
 
 class CheckoutView(LoginRequiredMixin, CreateView):
@@ -62,7 +62,7 @@ class CheckoutView(LoginRequiredMixin, CreateView):
             item.delete()
 
         # pay_order_url = reverse('orders:pay_order', kwargs={'order_code': random_code})
-        return redirect('orders:pay_order', code=random_code)
+        return redirect('orders:pay_order', order_code=random_code)
 
     def form_invalid(self, form):
         print(form.errors)
@@ -99,37 +99,41 @@ class PayOrderView(LoginRequiredMixin, View):
         order = get_object_or_404(Order, code__exact=order_code, user=request.user)
         if order.status != 'در انتظار پرداخت':
             messages.error(request, f'سفارش شما {order.status}.')
-            return redirect('orders:order_detail', code=order_code)
+            return redirect('orders:order_detail', order_code=order_code)
 
         print(order.get_price())
         print(order.code)
+        order.status = 'پرداخت شده'
+        order.save()
         # send to dargah with code
 
-        messages.success(request, 'سفارش شما با موفقیت پرداخت شد!')
-        return redirect('orders:order_detail', code=order_code)
+        return redirect('orders:pay_result', order_code=order_code)
 
 
 class PayOrderResultView(LoginRequiredMixin, TemplateView):
-    def get(self, request, *args, **kwargs):
+    template_name = 'orders/pay-result.html'
 
+    def get_object(self, order_code):
+        return get_object_or_404(Order, code__exact=order_code, user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
         order_code = self.kwargs['order_code']
-        order = get_object_or_404(Order, code__exact=order_code, user=request.user)
+        # order = get_object_or_404(Order, code__exact=order_code, user=request.user)
+        order = self.get_object(order_code)
 
         # receive pay code and check if done set to paid else canceled
         # order.status = 'پرداخت شده' - 'در انتظار پرداخت '
         # order.save()
 
-        messages.success(request, 'سفارش شما با موفقیت پرداخت شد!')
-        return redirect('orders:order_detail', code=order_code)
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         order_code = self.kwargs['order_code']
-        order = get_object_or_404(Order, code__exact=order_code, user=self.request.user)
+        # order = get_object_or_404(Order, code__exact=order_code, user=self.request.user)
+        order = self.get_object(order_code)
         context['order'] = order
         return context
-
-
 
 
 # class OrderInvoiceView(LoginRequiredMixin, DetailView):

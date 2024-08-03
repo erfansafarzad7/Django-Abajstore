@@ -314,31 +314,34 @@ class UserProfileView(LoginRequiredMixin, TemplateView):
 
 class AddressListView(LoginRequiredMixin, ListView):
     model = Address
-    template_name = 'accounts/my-address.html'
+    template_name = 'accounts/my-addresses.html'
     context_object_name = 'addresses'
 
 
 class AddressDetailView(LoginRequiredMixin, DetailView):
     model = Address
-    template_name = 'accounts/my-address.html'
+    template_name = 'accounts/my-addresses.html'
     context_object_name = 'address'
 
 
 class AddressCreateView(LoginRequiredMixin, AddressFormMixin, CreateView):
     model = Address
     form_class = AddressForm
-    template_name = 'accounts/my-address.html'
+    template_name = 'accounts/my-addresses.html'
     success_url = reverse_lazy('auth:address_list')
 
 
 class AddressUpdateView(LoginRequiredMixin, AddressFormMixin, UpdateView):
     model = Address
     form_class = AddressForm
-    template_name = 'accounts/my-address.html'
+    template_name = 'accounts/my-addresses.html'
     success_url = reverse_lazy('auth:address_list')
 
 
 class AddressDeleteView(LoginRequiredMixin, DeleteView):
     model = Address
-    template_name = 'accounts/my-address.html'
+    # template_name = 'accounts/my-addresses.html'
     success_url = reverse_lazy('auth:address_list')
+
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)

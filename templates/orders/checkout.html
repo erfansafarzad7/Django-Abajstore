@@ -43,7 +43,7 @@
     
     {% if not carts %}
           <div class="sm:text-lg text-sm divTextAlert danger">
-            <p>سبد خرید شما خالی است</p>
+            <p>محصولی برای تکمیل سفارش یافت نشد!</p>
           </div>
     {% else %}
         
@@ -70,42 +70,69 @@
                 <span>آدرس تحویل سفارش را انتخاب کنید:</span>
                 <span class="w-1/3 bg-primary h-[2px]"></span>
               </h2>
-                
-                
-              <div>
-                <div id="selectedLiOptions">
-                  <p id="selectedLiOptionsUserAddres"></p>
-                  <p>
-                    <i class="far fa-user"></i>
-                    <span id="selectedLiOptionsUserName"></span>
-                  </p>
-                </div>
-                <button id="showList" class="text-lowBlue text-sm">
-                  افزودن یا ویرایش آدرس
-                </button>
+              <div class="space-y-4">
+{#                <div class="relative flex">#}
+{#                  <select#}
+{#                    type="text"#}
+{#                    id="statusSelect"#}
+{#                    name="status"#}
+{#                    class="hidden"#}
+{#                    value="all"#}
+{#                  >#}
+{#                    <option value="all">همه</option>#}
+{#                  </select>#}
+{#                  <div#}
+{#                    id="statusSelectCont"#}
+{#                    class="outline-none select-none relative z-[1] cursor-pointer p-2 rounded border-2 bg-whiteColor border-submitPageColorBorderLowBlack focus:border-2 focus:border-submitPageColorBorderBlue sm:max-w-[300px] w-full"#}
+{#                  >#}
+{#                    همه#}
+{#                  </div>#}
+{#                  <div#}
+{#                    id="statusSelectOptions"#}
+{#                    class="absolute z-[2] top-[0px] right-0 border-submitPageColorBorderBlue border hidden"#}
+{#                  >#}
+{#                    <ul#}
+{#                      class="max-h-[150px] overflow-auto bg-whiteColor flex flex-col"#}
+{#                    >#}
+{#                      <li valueli="all" class="p-2 liActive">همه</li>#}
+{#                      <li valueli="value2" class="p-2">در انتضار پرداخت</li>#}
+{#                      <li valueli="value3" class="p-2">در حال پردازش</li>#}
+{#                      <li valueli="value4" class="p-2">پردازش شده</li>#}
+{#                      <li valueli="value5" class="p-2">تحویل داده شده</li>#}
+{#                    </ul>#}
+{#                  </div>#}
+{#                </div>#}
 
-                <ul class="flex flex-wrap gap-2" id="addressCont"></ul>
+                <ul class="flex flex-wrap gap-2">
+                  <li
+                    id="addressCont"
+                    class="cursor-pointer boxBorder relative flex items-center justify-center rounded-md min-h-[200px] max-w-[300px] w-full"
+                  >
+                    <i class="fa fa-plus"></i>
+                    <span>افزودن ادرس</span>
+                  </li>
+                </ul>
               </div>
             </div>
-              
-              
-              
-              
-            <div
-              class="w-full border-b-4 border-submitPageColorBorderLowBlack lg:border-0 space-y-5 lg:boxBorder rounded-md p-3"
-            >
-              <h2 class="flex flex-col gap-2 py-4 w-[max-content]">
-                <span>توضیحات سفارش (اختیاری):</span>
-                <span class="w-1/3 bg-primary h-[2px]"></span>
-              </h2>
-                <textarea
-                  name="user_dsc_textArea"
-                  id="user_dsc_textArea"
-                  class="w-full resize-y boxBorder h-[300px] border-submitPageColorBorderLowBlack border-2 py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-[border]"
-                >
-                </textarea>
             </div>
-          </div>
+              
+              
+              
+{#            <div#}
+{#              class="w-full border-b-4 border-submitPageColorBorderLowBlack lg:border-0 space-y-5 lg:boxBorder rounded-md p-3"#}
+{#            >#}
+{#              <h2 class="flex flex-col gap-2 py-4 w-[max-content]">#}
+{#                <span>توضیحات سفارش (اختیاری):</span>#}
+{#                <span class="w-1/3 bg-primary h-[2px]"></span>#}
+{#              </h2>#}
+{#                <textarea#}
+{#                  name="user_dsc_textArea"#}
+{#                  id="user_dsc_textArea"#}
+{#                  class="w-full resize-y boxBorder h-[300px] border-submitPageColorBorderLowBlack border-2 py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-[border]"#}
+{#                >#}
+{#                </textarea>#}
+{#            </div>#}
+{#          </div>#}
         
         
         
@@ -137,7 +164,7 @@
                     <span class="max-w-[200px]"
                       >{{ cart.product.name }}  × {{ cart.quantity }} عدد 
                     </span>
-                    <span>{{ cart.cart_item_price }}<span>تومان</span></span>
+                    <span>{{ cart.cart_item_price }}<span> تومان </span></span>
                   </li>
                     {% endfor %}
                     
@@ -145,14 +172,14 @@
                 </ul>
                 <div class="flex justify-between text-blackColor">
                   <span>جمع</span>
-                  <span>{{ cart.calculate_total_price }}<span>تومان</span></span>
+                  <span>{{ cart.calculate_total_price }}<span> تومان </span></span>
                 </div>
                 <div
                   data-dec="for show replace hidden with flex"
                   class="flex justify-between text-primary"
                 >
                   <span>تخفیف</span>
-                  <span>{{ cart.calculate_total_discount }}<span>تومان</span></span>
+                  <span>{{ cart.calculate_total_discount }}<span> تومان </span></span>
                 </div>
 {#                <div class="flex justify-between">#}
 {#                  <span#}
@@ -164,25 +191,25 @@
 
                 <div class="flex justify-between text-blackColor">
                   <span>مبلغ قابل پرداخت </span>
-                  <span>{{ cart.calculate_total_discounted_price }}<span>تومان</span></span>
+                  <span>{{ cart.calculate_total_discounted_price }}<span> تومان </span></span>
                 </div>
               </div>
               <form class="flex flex-col gap-4 py-4" method="post" >
                   {% csrf_token %}
-{#                <label for="melate" class="payMethodCheckBox">#}
-{#                  <input#}
-{#                    type="radio"#}
-{#                    name="payMethodName"#}
-{#                    value="melate"#}
-{#                    id="melate"#}
-{#                    checked#}
-{#                  />#}
-{#                  <span class="checkmark"></span>#}
-{#                  <span class="px-10">درگاه ملت</span>#}
-{#                  <div class="dropDownPayMethod">#}
-{#                    پرداخت با تمامی کارت های عضو شتاب#}
-{#                  </div>#}
-{#                </label>#}
+                <label for="melate" class="payMethodCheckBox">
+                  <input
+                    type="radio"
+                    name="payMethodName"
+                    value="melate"
+                    id="melate"
+                    checked
+                  />
+                  <span class="checkmark"></span>
+                  <span class="px-10">درگاه پارسیان</span>
+                  <div class="dropDownPayMethod">
+                    پرداخت با تمامی کارت های عضو شتاب
+                  </div>
+                </label>
                 <label for="melate" class="payMethodCheckBox">
                     
                   {{ form.address }}
@@ -194,32 +221,7 @@
                     آدرس
                   </div>
                 </label>
-{#                <label for="parsian" class="payMethodCheckBox">#}
-{#                  <input#}
-{#                    type="radio"#}
-{#                    name="payMethodName"#}
-{#                    value="parsian"#}
-{#                    id="parsian"#}
-{#                  />#}
-{#                  <span class="checkmark"></span>#}
-{#                  <span class="px-10">درگاه پارسیان</span>#}
-{#                  <div class="dropDownPayMethod">#}
-{#                    پرداخت با تمامی کارت های عضو شتاب#}
-{#                  </div>#}
-{#                </label>#}
-{#                <label for="idPay" class="payMethodCheckBox">#}
-{#                  <input#}
-{#                    type="radio"#}
-{#                    name="payMethodName"#}
-{#                    value="idPay"#}
-{#                    id="idPay"#}
-{#                  />#}
-{#                  <span class="checkmark"></span>#}
-{#                  <span class="px-10">درگاه آیدی پی</span>#}
-{#                  <div class="dropDownPayMethod">#}
-{#                    پرداخت با تمامی کارت های عضو شتاب#}
-{#                  </div>#}
-{#                </label>#}
+
                 <button type="submit"
                   id="submitProducts"
                   class="bg-redColor opacity-80 hover:opacity-100 transition-opacity duration-300 text-whiteColor py-3 w-full rounded-md"
@@ -234,127 +236,125 @@
     
     {% endif %}
     
-    
-    
-{#      <section#}
-{#        id="editCard"#}
-{#        class="filterContWithAnimate hidden flex items-center justify-center bg-lowOpacityColorBg fixed w-full h-screen top-0 left-0 z-40 showFilterSec"#}
-{#      >#}
-{#        <div#}
-{#          class="flex flex-col relative gap-4 text-sm bg-whiteColor h-full lg:h-max p-4 rounded-md lg:min-h-[400px] lg:w-1/2 w-full"#}
-{#        >#}
-{#          <div#}
-{#            class="flex absolute right-0 px-4 z-10 bg-whiteColor top-0 w-full justify-between items-center border-b-4 border-submitPageColorBorderLowBlack py-2"#}
-{#          >#}
-{#            <h1>ویرایش آدرس</h1>#}
-{#            <button id="closeWindow"><i class="fa fa-remove"></i></button>#}
-{#          </div>#}
-{#          <div#}
-{#            class="sm:pb-[10px] pt-[60px] pb-[60px] overflow-y-auto space-y-4"#}
-{#          >#}
-{#            <div class="flex flex-col sm:flex-row gap-4">#}
-{#              <div class="flex flex-col basis-[50%] py-2">#}
-{#                <label>#}
-{#                  استان#}
-{#                  <strong class="text-primary">*</strong>#}
-{#                </label>#}
-{#                <select#}
-{#                  name="asd"#}
-{#                  disabled="true"#}
-{#                  class="cursor-not-allowed bg-lowerGray p-2"#}
-{#                >#}
-{#                  <option value="yazd">یزد</option>#}
-{#                </select>#}
-{#              </div>#}
-{#              <div class="flex flex-col basis-[50%] py-2">#}
-{#                <label for="user_city">#}
-{#                  استان#}
-{#                  <strong class="text-primary">*</strong>#}
-{#                </label>#}
-{#                <select id="user_city" name="asd" class="bg-lowerGray p-2">#}
-{#                  <option value="">شهر</option>#}
-{#                </select>#}
-{#              </div>#}
-{#            </div>#}
-{#            <div>#}
-{#              <label for="user_addres">#}
-{#                آدرس#}
-{#                <strong class="text-primary">*</strong>#}
-{#              </label>#}
-{#              <input#}
-{#                type="text"#}
-{#                name="user_addres"#}
-{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
-{#                id="user_addres"#}
-{#              />#}
-{#            </div>#}
-{#            <div>#}
-{#              <label for="user_postCode">#}
-{#                کدپستی#}
-{#                <strong class="text-lowGreenColor">(اختیاری)</strong>#}
-{#              </label>#}
-{#              <input#}
-{#                type="text"#}
-{#                name="user_postCode"#}
-{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
-{#                id="user_postCode"#}
-{#              />#}
-{#            </div>#}
-{#            <div>#}
-{#              <label for="user_number">#}
-{#                تلفن#}
-{#                <strong class="text-primary">*</strong>#}
-{#              </label>#}
-{#              <input#}
-{#                type="text"#}
-{#                name="user_number"#}
-{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
-{#                id="user_number"#}
-{#              />#}
-{#            </div>#}
-{#            <div>#}
-{#              <label for="user_name">#}
-{#                نام#}
-{#                <strong class="text-primary">*</strong>#}
-{#              </label>#}
-{#              <input#}
-{#                type="text"#}
-{#                name="user_name"#}
-{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
-{#                id="user_name"#}
-{#              />#}
-{#            </div>#}
-{#            <div>#}
-{#              <label for="user_last_name">#}
-{#                نام خانوادگی#}
-{#                <strong class="text-primary">*</strong>#}
-{#              </label>#}
-{#              <input#}
-{#                type="text"#}
-{#                name="user_last_name"#}
-{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
-{#                id="user_last_name"#}
-{#              />#}
-{#            </div>#}
-{#            <div#}
-{#              class="flex gap-2 px-4 z-10 bg-whiteColor w-full justify-end items-center py-2"#}
-{#            >#}
-{#              <button#}
-{#                id="closeAddresCont"#}
-{#                class="bg-lowerGray py-3 px-5 rounded-md"#}
-{#              >#}
-{#                بستن#}
-{#              </button>#}
-{#              <button#}
-{#                id="setAddres"#}
-{#                class="bg-redColor opacity-80 hover:opacity-100 transition-opacity duration-300 text-whiteColor py-3 px-5 rounded-md"#}
-{#              >#}
-{#                ثبت#}
-{#              </button>#}
-{#            </div>#}
-{#          </div>#}
-{#        </div>#}
-{#      </section>#}
+    <section
+        id="editCard"
+        class="filterContWithAnimate hidden items-center justify-center bg-lowOpacityColorBg fixed w-full h-screen top-0 left-0 z-40 showFilterSec"
+      >
+        <div
+          class="flex flex-col relative gap-4 text-sm bg-whiteColor h-full lg:h-max p-4 rounded-md lg:min-h-[400px] lg:w-1/2 w-full"
+        >
+          <div
+            class="flex absolute right-0 px-4 z-10 bg-whiteColor top-0 w-full justify-between items-center border-b-4 border-submitPageColorBorderLowBlack py-2"
+          >
+            <h1>افزودن آدرس</h1>
+            <button id="closeWindow"><i class="fa fa-remove"></i></button>
+          </div>
+          <div
+            class="sm:pb-[10px] pt-[60px] pb-[60px] overflow-y-auto space-y-4"
+          >
+            <div class="flex flex-col sm:flex-row gap-4">
+              <div class="flex flex-col basis-[50%] py-2">
+                <label>
+                  استان
+                  <strong class="text-primary">*</strong>
+                </label>
+                <select
+                  name="asd"
+                  disabled="true"
+                  class="cursor-not-allowed bg-lowerGray p-2"
+                >
+                  <option value="yazd">یزد</option>
+                </select>
+              </div>
+              <div class="flex flex-col basis-[50%] py-2">
+                <label for="user_city">
+                  استان
+                  <strong class="text-primary">*</strong>
+                </label>
+                <select id="user_city" name="asd" class="bg-lowerGray p-2">
+                  <option value="">شهر</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="user_addres">
+                آدرس
+                <strong class="text-primary">*</strong>
+              </label>
+              <input
+                type="text"
+                name="user_addres"
+                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"
+                id="user_addres"
+              />
+            </div>
+            <div>
+              <label for="user_postCode">
+                کدپستی
+                <strong class="text-lowGreenColor">(اختیاری)</strong>
+              </label>
+              <input
+                type="text"
+                name="user_postCode"
+                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"
+                id="user_postCode"
+              />
+            </div>
+            <div>
+              <label for="user_number">
+                تلفن
+                <strong class="text-primary">*</strong>
+              </label>
+              <input
+                type="text"
+                name="user_number"
+                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"
+                id="user_number"
+              />
+            </div>
+            <div>
+              <label for="user_name">
+                نام
+                <strong class="text-primary">*</strong>
+              </label>
+              <input
+                type="text"
+                name="user_name"
+                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"
+                id="user_name"
+              />
+            </div>
+            <div>
+              <label for="user_last_name">
+                نام خانوادگی
+                <strong class="text-primary">*</strong>
+              </label>
+              <input
+                type="text"
+                name="user_last_name"
+                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"
+                id="user_last_name"
+              />
+            </div>
+            <div
+              class="flex gap-2 px-4 z-10 bg-whiteColor w-full justify-end items-center py-2"
+            >
+              <button
+                id="closeAddresCont"
+                class="bg-lowerGray py-3 px-5 rounded-md"
+              >
+                بستن
+              </button>
+              <button
+                id="setAddres"
+                class="bg-redColor opacity-80 hover:opacity-100 transition-opacity duration-300 text-whiteColor py-3 px-5 rounded-md"
+              >
+                ثبت
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   
   
@@ -381,6 +381,136 @@
 
 
 {% block scripts %} 
+     <script>
+      let interValOpenEditCard = null;
+      function closeSectionFilters(interVal, filterCont, classes) {
+        if (interVal) clearInterval(interVal);
+        filterCont.removeClass(classes[0]);
+        filterCont.addClass(classes[1]);
+        interVal = setTimeout(() => {
+          interVal = null;
+          filterCont.removeClass(classes[1]);
+          filterCont.addClass(classes[2]);
+          document.body.classList.remove("overflow-hidden");
+        }, 500);
+      }
+
+      $("#addressCont").on("click", function () {
+        $("#editCard").addClass("showFilterSec");
+        $("#editCard").removeClass("hidden");
+        $("#editCard").addClass("flex");
+        document.body.classList.add("overflow-hidden");
+      });
+      $("#editCard ,  #closeAddresCont,#closeWindow ").on(
+        "click",
+        function (e) {
+          if (
+            this === e.target ||
+            this.id === "closeAddresCont" ||
+            this.id === "closeWindow"
+          ) {
+            closeSectionFilters(interValOpenEditCard, $("#editCard"), [
+              "showFilterSec",
+              "hideFilterSec",
+              "hidden",
+            ]);
+          }
+        }
+      );
+      let isTouchLi = false;
+      function clickLiHand(
+        nameCont,
+        li,
+        showClass,
+        select,
+        statusCont,
+        isLi = true
+      ) {
+        document.querySelector(nameCont).classList.remove(showClass);
+        document.querySelector(nameCont).classList.add("hidden");
+        if (!isLi) return;
+        isTouchLi = true;
+        select.options[0].textContent = li.textContent;
+        select.options[0].value = li.getAttribute("valueli");
+        select.value = select.options[0].value;
+        statusCont.text(li.textContent);
+      }
+
+      function searchLi(arr, select) {
+        arr.forEach((li) => {
+          if (select.innerText === li.innerText) {
+            li.classList.add("liActive");
+          } else {
+            li.classList.remove("liActive");
+          }
+        });
+      }
+      function resizestatusSelectCont() {
+        $("#statusSelectOptions").css(
+          "width",
+          $("#statusSelectCont")[0].scrollWidth + "px"
+        );
+        $("#statusSelectOptions").css(
+          "top",
+          $("#statusSelectCont")[0].scrollHeight + "px"
+        );
+      }
+      new ResizeObserver(resizestatusSelectCont).observe(
+        $("#statusSelectCont")[0]
+      );
+      $("#statusSelectCont").on("click", function (e) {
+        e.preventDefault();
+        $("#statusSelectOptions").css(
+          "width",
+          $("#statusSelectCont")[0].scrollWidth + "px"
+        );
+        $("#statusSelectOptions").toggleClass("block");
+        $("#statusSelectOptions").toggleClass("hidden");
+      });
+
+      $("#statusSelectOptions li").on("click", function () {
+        isTouchLi = true;
+        clickLiHand(
+          "#statusSelectOptions",
+          this,
+          "block",
+          $("#statusSelect")[0],
+          $("#statusSelectCont")
+        );
+        searchLi(
+          Array.from($("#statusSelectOptions li")),
+          $("#statusSelectCont")[0]
+        );
+      });
+
+      $("#statusSelectOptions li").on("mouseover", function () {
+        $("#statusSelectOptions li").removeClass("liActive");
+        this.classList.add("liActive");
+      });
+
+      $("#payMethodOptions li").on("mouseover", function () {
+        $("#payMethodOptions li").removeClass("liActive");
+        this.classList.add("liActive");
+      });
+
+      // set to defualt show selects
+      $(window).on("click", function (e) {
+        if (e.target.id != "statusSelectCont") {
+          clickLiHand("#statusSelectOptions", "", "block", "", "", false);
+          searchLi(
+            Array.from($("#statusSelectOptions li")),
+            $("#statusSelectCont")[0]
+          );
+        }
+
+        if (!isTouchLi && $("#statusSelect")[0].value) {
+          searchLi(
+            Array.from($("#statusSelectOptions li")),
+            $("#statusSelectCont")[0]
+          );
+        }
+      });
+    </script>
 {% endblock %}
 
 

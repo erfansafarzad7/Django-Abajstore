@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+
+{% block title %} سفارشات من {% endblock %}
+
+
+
+{% block style %} {% endblock %}
+
+
+
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    سفارشات من:
+    <br>
+    <br>
+    {% for order in orders %}
+        <a href="{% url 'orders:order_detail' order.code %}">{{ order.code }}</a></br>
+        وضعیت : {{ order.status }} </br>
+        ----------------</br>
+    {% endfor %}
+    
+ {% endblock %}
+
+
+
+  {% block scripts %} {% endblock %}

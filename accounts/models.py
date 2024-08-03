@@ -68,5 +68,9 @@ class Address(models.Model):
 
     created = jmodels.jDateField(_('تاریخ ایجاد'), auto_now_add=True)
 
+    class Meta:
+        verbose_name = _('آدرس ها')
+        verbose_name_plural = _('آدرس ها')
+
     def __str__(self):
         return f'{self.city} - {self.address[:25]}'

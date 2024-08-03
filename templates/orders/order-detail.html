@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-order detail
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+
+{% block title %} جزئیات سفارش {% endblock %}
+
+
+
+{% block style %} {% endblock %}
+
+
+
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    سفارشات شماره : {{ order.code }}
+    <br>
+    <br>
+       کد :  {{ order.code }} </br>
+            ----------------</br>
+        وضعیت : {{ order.status }} </br>
+            ----------------</br>
+    {% if order.status == 'در انتظار پرداخت' %}
+        <a href="{% url 'orders:pay_order' order.code %}">برای پرداخت مبلغ سفارش کلیک کنید..</a></br>
+    {% endif %}
+        ----------------</br>
+    
+ {% endblock %}
+
+
+
+  {% block scripts %} {% endblock %}
