@@ -4,7 +4,7 @@ from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
-
+from accounts.forms import AddressForm
 from products.models import Product
 from .models import Order, OrderItem
 from .forms import CouponForm, OrderForm
@@ -12,11 +12,29 @@ from carts.models import Cart
 import random
 
 
+# class ProductFilter(django_filters.FilterSet):
+#     name = django_filters.CharFilter(field_name='name', lookup_expr='icontains')
+#     price_max = django_filters.NumberFilter(field_name='price', lookup_expr='lte', label='حداکثر قیمت')
+#
+#     order_by = django_filters.OrderingFilter(
+#         fields=(
+#             ('created', 'created'),
+#         )
+#     )
+#
+#     class Meta:
+#         model = Product
+#         fields = ['name', 'price_max']
+
+# FilterView
+# filterset_class = ProductFilter
+
+
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'orders/my-orders.html'
     context_object_name = 'orders'
-    paginate_by = 3     # ---------------------------------------------------<<<<<<<<<<<<<<<<<<<<<<
+    paginate_by = 10
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
@@ -43,7 +61,7 @@ class CheckoutView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def form_valid(self, form):
-        random_code = str(random.randint(10**10, 10**15))
+        random_code = str(random.randint(10 ** 10, 10 ** 15))
         order = form.save(commit=False)
         order.user = self.request.user
         order.code = random_code
@@ -73,6 +91,7 @@ class CheckoutView(LoginRequiredMixin, CreateView):
         cart, _ = Cart.objects.get_or_create(user=self.request.user)
         context['carts'] = cart.cart_items.all()
         context['cart'] = cart
+        context['new_address_form'] = AddressForm()
         return context
 
 
@@ -134,7 +153,6 @@ class PayOrderResultView(LoginRequiredMixin, TemplateView):
         order = self.get_object(order_code)
         context['order'] = order
         return context
-
 
 # class OrderInvoiceView(LoginRequiredMixin, DetailView):
 #     model = Order

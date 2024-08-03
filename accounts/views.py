@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.views.generic import FormView, CreateView, RedirectView, UpdateView, DeleteView, DetailView, ListView, \
-    TemplateView
+    TemplateView, View
 from .forms import UserCreationForm, OTPForm, ForgetPasswordForm, UserProfileForm, AddressForm, \
     CustomAuthenticationForm, ChangePasswordForm
 from .models import User, OTP, Address
@@ -324,11 +324,29 @@ class AddressDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'address'
 
 
-class AddressCreateView(LoginRequiredMixin, AddressFormMixin, CreateView):
-    model = Address
-    form_class = AddressForm
-    template_name = 'accounts/my-addresses.html'
-    success_url = reverse_lazy('auth:address_list')
+class AddressCreateView(LoginRequiredMixin, View):
+    # model = Address
+    # form_class = AddressForm
+    # success_url = reverse_lazy('orders:checkout')
+    # template_name = 'orders/checkout.html'
+
+    def post(self, request, *args, **kwargs):
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            Address.objects.create(user=request.user, **form.cleaned_data)
+
+        messages.error(request, f'{[e for f, e in form.errors.items()]}')
+        # print(form.errors)
+        return redirect('orders:checkout')
+
+    # def form_valid(self, form):
+    #     form.instance.user = self.request.user
+    #     if form.is_valid():
+    #         Address.objects.create(user=self.request.user, **form.cleaned_data)
+    #         print(form.cleaned_data)
+    #         return redirect('orders:checkout')
+    #
+    #     return super().form_valid(form)
 
 
 class AddressUpdateView(LoginRequiredMixin, AddressFormMixin, UpdateView):

@@ -94,7 +94,7 @@ class Product(models.Model):
     #                                decimal_places=1, max_digits=2)
 
     description = models.TextField(_('توضیحات'), null=True, blank=True)
-    is_in_special_category = models.BooleanField(_('فعال در مناسبت'), default=False)
+    # is_in_special_category = models.BooleanField(_('فعال در مناسبت'), default=False)
     active = models.BooleanField(_('فعال'), default=True)
 
     objects = models.Manager()

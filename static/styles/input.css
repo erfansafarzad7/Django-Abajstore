@@ -471,30 +471,24 @@
         border-radius: 8px;
     }
 
-    .divTextAlert.danger {
+    .danger {
         background-color: #ef4056;
         color: #fff;
     }
 
-    .divTextAlert.success {
+    .success {
         background-color: rgb(75, 170, 75);
         color: #fff;
     }
 
-    #addressCont,
     #selectedLiOptions {
         max-height: 0;
         transition: all .5s;
         overflow: hidden;
     }
 
-    #addressCont.showListAddres,
     #selectedLiOptions.showListAddresOption {
         max-height: 2000px;
-    }
-
-    #addressCont.showListAddres {
-        overflow: auto;
     }
 
     #showList.none {

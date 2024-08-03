@@ -60,7 +60,7 @@ class Address(models.Model):
     receiver_name = models.CharField(_('نام گیرنده'), max_length=50, validators=[persian_characters, ])
     phone_number = models.CharField(_('شماره موبایل گیرنده'), max_length=11,
                                     validators=[persian_phone_number_validation, ])
-    state = models.CharField(_('استان'), max_length=30, validators=[persian_characters, ])
+    state = models.CharField(_('استان'), default='یزد', max_length=30, validators=[persian_characters, ])
     city = models.CharField(_('شهر'), max_length=30, validators=[persian_characters, ])
     address = models.CharField(_('آدرس'), max_length=30, validators=[persian_address, ])
     postalcode = models.CharField(_('کد پستی'), null=True, blank=True, max_length=20, validators=[only_number, ])
@@ -73,4 +73,10 @@ class Address(models.Model):
         verbose_name_plural = _('آدرس ها')
 
     def __str__(self):
-        return f'{self.city} - {self.address[:25]}'
+        return f'{self.phone_number} - {self.city} - {self.address[:25]}..'
+
+    def get_full_address(self):
+        return (f'نام گیرنده : {self.receiver_name}\n'
+                f' شماره تماس : {self.phone_number}\n'
+                f' شهر : {self.city}\n'
+                f' آدرس : {self.address} {self.postalcode}')

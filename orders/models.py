@@ -30,7 +30,7 @@ class Order(models.Model):
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='کاربر')
     code = models.CharField(_('کد سفارش'), max_length=15, unique=True)
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='پروفایل')
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='آدرس')
     # payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='')
     send_price = models.PositiveIntegerField(_('هزینه ی ارسال'), default=30_000)
     coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL,null=True, blank=True, verbose_name='کد تخفیف')
@@ -60,8 +60,8 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items', verbose_name='سفارش')
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='محصول')
-    color = models.CharField(_('رنگ'), max_length=20, null=True, blank=True)
-    size = models.CharField(_('سایز'), max_length=20, null=True, blank=True)
+    # color = models.CharField(_('رنگ'), max_length=20, null=True, blank=True)
+    # size = models.CharField(_('سایز'), max_length=20, null=True, blank=True)
     quantity = models.PositiveIntegerField(_('تعداد'), default=1)
     price = models.PositiveIntegerField(_('جمع قیمت (محاسبه شده با تعداد)'), )
 

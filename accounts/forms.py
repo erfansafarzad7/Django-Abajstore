@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, AuthenticationForm
 from django.core.exceptions import ValidationError
-from utils.validators import persian_phone_number_validation
 from .models import User, OTP, Address
+from utils.validators import *
 
 
 class UserCreationForm(forms.ModelForm):
@@ -189,9 +189,60 @@ class UserProfileForm(forms.ModelForm):
 
 
 class AddressForm(forms.ModelForm):
+    receiver_name = forms.CharField(
+        validators=[persian_characters, ],
+        widget=forms.TextInput(
+            attrs={'class': 'border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all',
+                   'placeholder': 'نام گیرنده'})
+    )
+    phone_number = forms.CharField(
+        validators=[persian_phone_number_validation],
+        widget=forms.TextInput(
+            attrs={'class': 'border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none'
+                            ' focus:border-submitPageColorBorderBlue transition-all',
+                   'placeholder': 'شماره تماس گیرنده'})
+    )
+    city = forms.CharField(
+        validators=[persian_characters],
+        widget=forms.TextInput(
+            attrs={'class': 'border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none'
+                            ' focus:border-submitPageColorBorderBlue transition-all',
+                   'placeholder': 'شهر'})
+    )
+    address = forms.CharField(
+        validators=[persian_address],
+        widget=forms.TextInput(
+            attrs={'class': 'border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none '
+                            'focus:border-submitPageColorBorderBlue transition-all',
+                   'placeholder': 'آدرس'})
+    )
+    postalcode = forms.CharField(
+        validators=[only_number],
+        widget=forms.TextInput(
+            attrs={'class': 'border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none'
+                            ' focus:border-submitPageColorBorderBlue transition-all',
+                   'placeholder': 'کدپستی'}), required=False
+    )
+    note = forms.CharField(
+        validators=[],
+        widget=forms.TextInput(
+            attrs={'class': 'border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none'
+                            ' focus:border-submitPageColorBorderBlue transition-all',
+                   'placeholder': 'یادداشت..'}), required=False
+    )
+
     class Meta:
         model = Address
         fields = ['receiver_name', 'phone_number', 'city', 'address', 'postalcode', 'note']
-        widgets = {
-            'note': forms.Textarea(attrs={'rows': 3}),
-        }
+
+        def __init__(self, *args, **kwargs):
+            self.user = kwargs.pop('user', None)
+            super().__init__(*args, **kwargs)
+
+        def save(self, commit=True):
+            instance = super().save(commit=False)
+            if self.user:
+                instance.user = self.user
+            if commit:
+                instance.save()
+            return instance

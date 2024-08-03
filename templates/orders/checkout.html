@@ -63,14 +63,14 @@
               
               
               
-            <div
-              class="w-full border-b-4 border-submitPageColorBorderLowBlack lg:border-0 space-y-5 lg:boxBorder rounded-md p-3"
-            >
-              <h2 class="flex flex-col gap-2 py-4 w-[max-content]">
-                <span>آدرس تحویل سفارش را انتخاب کنید:</span>
-                <span class="w-1/3 bg-primary h-[2px]"></span>
-              </h2>
-              <div class="space-y-4">
+{#            <div#}
+{#              class="w-full border-b-4 border-submitPageColorBorderLowBlack lg:border-0 space-y-5 lg:boxBorder rounded-md p-3"#}
+{#            >#}
+{#              <h2 class="flex flex-col gap-2 py-4 w-[max-content]">#}
+{#                <span>آدرس تحویل سفارش را انتخاب کنید:</span>#}
+{#                <span class="w-1/3 bg-primary h-[2px]"></span>#}
+{#              </h2>#}
+{#              <div class="space-y-4">#}
 {#                <div class="relative flex">#}
 {#                  <select#}
 {#                    type="text"#}
@@ -102,19 +102,19 @@
 {#                    </ul>#}
 {#                  </div>#}
 {#                </div>#}
-
-                <ul class="flex flex-wrap gap-2">
-                  <li
-                    id="addressCont"
-                    class="cursor-pointer boxBorder relative flex items-center justify-center rounded-md min-h-[200px] max-w-[300px] w-full"
-                  >
-                    <i class="fa fa-plus"></i>
-                    <span>افزودن ادرس</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            </div>
+{##}
+{#                <ul class="flex flex-wrap gap-2">#}
+{#                  <li#}
+{#                    id="addressCont"#}
+{#                    class="cursor-pointer boxBorder relative flex items-center justify-center rounded-md min-h-[200px] max-w-[300px] w-full"#}
+{#                  >#}
+{#                    <i class="fa fa-plus"></i>#}
+{#                    <span>افزودن ادرس</span>#}
+{#                  </li>#}
+{#                </ul>#}
+{#              </div>#}
+{#            </div>#}
+{#            </div>#}
               
               
               
@@ -134,7 +134,24 @@
 {#            </div>#}
 {#          </div>#}
         
-        
+        <div
+              class="w-full border-b-4 border-submitPageColorBorderLowBlack lg:border-0 space-y-5 lg:boxBorder rounded-md p-3"
+            >
+              <h2 class="flex flex-col gap-2 py-4 w-[max-content]">
+                <span>توضیحات سفارش (اختیاری):</span>
+                <span class="w-1/3 bg-primary h-[2px]"></span>
+              </h2>
+              <form>
+                  {% csrf_token %}
+                <textarea
+                  name="user_dsc_textArea"
+                  id="user_dsc_textArea"
+                  class="w-full resize-y boxBorder h-[300px] border-submitPageColorBorderLowBlack border-2 py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-[border]"
+                >
+                </textarea>
+              </form>
+            </div>
+            </div>
         
         
         
@@ -167,7 +184,7 @@
                     <span>{{ cart.cart_item_price }}<span> تومان </span></span>
                   </li>
                     {% endfor %}
-                    
+
                     
                 </ul>
                 <div class="flex justify-between text-blackColor">
@@ -194,8 +211,60 @@
                   <span>{{ cart.calculate_total_discounted_price }}<span> تومان </span></span>
                 </div>
               </div>
+            
+            
+            
               <form class="flex flex-col gap-4 py-4" method="post" >
                   {% csrf_token %}
+                  
+                <div class="space-y-4">
+                  <a href="#" class="text-lowBlue" id="addressCont"
+                    >اضافه کردن آدرس جدید</a
+                  >
+                  <div class="relative flex">
+                      <p>ارسال به : </p>
+                      
+                  {{ form.address }}
+                  {{ form.address.errors }}
+{#                    <select#}
+{#                      type="text"#}
+{#                      id="statusSelect"#}
+{#                      name="status"#}
+{#                      class=""#}
+{#                      value=""#}
+{#                    >#}
+{#                      <option value="all">----</option>#}
+{##}
+{#                    </select>#}
+
+                      
+{#                    <div#}
+{#                      id="statusSelectCont"#}
+{#                      class="outline-none select-none relative z-[1] cursor-pointer p-2 rounded border-2 bg-whiteColor border-submitPageColorBorderLowBlack focus:border-2 focus:border-submitPageColorBorderBlue sm:max-w-[300px] w-full"#}
+{#                    >#}
+{#                      {{ address }}#}
+{#                    </div>#}
+{#                    <div#}
+{#                      id="statusSelectOptions"#}
+{#                      class="absolute z-[2] top-[0px] right-0 border-submitPageColorBorderBlue border hidden"#}
+{#                    >#}
+{#                      <ul#}
+{#                        class="max-h-[150px] overflow-auto bg-whiteColor flex flex-col"#}
+{#                      >#}
+                      
+                      
+{#                      {% for address in form.address.field.queryset %}#}
+{#                            <li valueli="value{{ address.id }}" class="p-2 liActive">{{ address }}</li>#}
+{#                        {% empty %}#}
+{#                            <li valueli="" class="p-2">یک آدرس اضافه کنید</li>#}
+{#                        {% endfor %}#}
+                  
+{#                      </ul>#}
+{#                    </div>#}
+                  </div>
+                </div>
+                  
+                  
                 <label for="melate" class="payMethodCheckBox">
                   <input
                     type="radio"
@@ -210,17 +279,16 @@
                     پرداخت با تمامی کارت های عضو شتاب
                   </div>
                 </label>
-                <label for="melate" class="payMethodCheckBox">
-                    
-                  {{ form.address }}
-                  {{ form.address.errors }}
-                    
-                  <span class="checkmark"></span>
-                  <span class="px-10">آدرس</span>
-                  <div class="dropDownPayMethod">
-                    آدرس
-                  </div>
-                </label>
+{#                <label for="melate" class="payMethodCheckBox">#}
+{#                    #}
+{##}
+{#                    #}
+{#                  <span class="checkmark"></span>#}
+{#                  <span class="px-10">آدرس</span>#}
+{#                  <div class="dropDownPayMethod">#}
+{#                    آدرس#}
+{#                  </div>#}
+{#                </label>#}
 
                 <button type="submit"
                   id="submitProducts"
@@ -229,6 +297,10 @@
                   ثبت سفارش
                 </button>
               </form>
+            
+            
+            
+            
             </nav>
           </aside>
         </div>
@@ -236,7 +308,7 @@
     
     {% endif %}
     
-    <section
+      <section
         id="editCard"
         class="filterContWithAnimate hidden items-center justify-center bg-lowOpacityColorBg fixed w-full h-screen top-0 left-0 z-40 showFilterSec"
       >
@@ -246,113 +318,143 @@
           <div
             class="flex absolute right-0 px-4 z-10 bg-whiteColor top-0 w-full justify-between items-center border-b-4 border-submitPageColorBorderLowBlack py-2"
           >
-            <h1>افزودن آدرس</h1>
+            <h1>اضافه کردن آدرس</h1>
             <button id="closeWindow"><i class="fa fa-remove"></i></button>
           </div>
-          <div
+          <form method="post" action="{% url 'auth:address_create' %}"
             class="sm:pb-[10px] pt-[60px] pb-[60px] overflow-y-auto space-y-4"
           >
-            <div class="flex flex-col sm:flex-row gap-4">
-              <div class="flex flex-col basis-[50%] py-2">
-                <label>
-                  استان
-                  <strong class="text-primary">*</strong>
-                </label>
-                <select
-                  name="asd"
-                  disabled="true"
-                  class="cursor-not-allowed bg-lowerGray p-2"
-                >
-                  <option value="yazd">یزد</option>
-                </select>
-              </div>
-              <div class="flex flex-col basis-[50%] py-2">
-                <label for="user_city">
-                  استان
-                  <strong class="text-primary">*</strong>
-                </label>
-                <select id="user_city" name="asd" class="bg-lowerGray p-2">
-                  <option value="">شهر</option>
-                </select>
-              </div>
-            </div>
+              {% csrf_token %}
+{#            <div class="flex flex-col sm:flex-row gap-4">#}
+{#              <div class="flex flex-col basis-[50%] py-2">#}
+{#                <label>#}
+{#                  استان#}
+{#                  <strong class="text-primary">*</strong>#}
+{#                </label>#}
+{#                <select#}
+{#                  name="asd"#}
+{#                  disabled="true"#}
+{#                  class="cursor-not-allowed bg-lowerGray p-2"#}
+{#                >#}
+{#                  <option value="yazd">یزد</option>#}
+{#                </select>#}
+{#              </div>#}
+{#              <div class="flex flex-col basis-[50%] py-2">#}
+{#                <label for="user_city">#}
+{#                  شهر#}
+{#                  <strong class="text-primary">*</strong>#}
+{#                </label>#}
+{#                <select id="user_city" name="asd" class="bg-lowerGray p-2">#}
+{#                  <option value="">شهر</option>#}
+{#                </select>#}
+{#              </div>#}
+{#            </div>#}
             <div>
               <label for="user_addres">
-                آدرس
+                  نام گیرنده
                 <strong class="text-primary">*</strong>
               </label>
-              <input
-                type="text"
-                name="user_addres"
-                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"
-                id="user_addres"
-              />
+                {{ new_address_form.receiver_name }}
+                {{ new_address_form.receiver_name.errors }}
+{#              <input#}
+{#                type="text"#}
+{#                name="user_addres"#}
+{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
+{#                id="user_addres"#}
+{#              />#}
             </div>
             <div>
               <label for="user_postCode">
-                کدپستی
-                <strong class="text-lowGreenColor">(اختیاری)</strong>
+                شماره گیرنده
+                <strong class="text-primary">*</strong>
               </label>
-              <input
-                type="text"
-                name="user_postCode"
-                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"
-                id="user_postCode"
-              />
+                {{ new_address_form.phone_number }}
+                {{ new_address_form.phone_number.errors }}
+{#              <input#}
+{#                type="text"#}
+{#                name="user_postCode"#}
+{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
+{#                id="user_postCode"#}
+{#              />#}
             </div>
             <div>
               <label for="user_number">
-                تلفن
+                شهر
                 <strong class="text-primary">*</strong>
               </label>
-              <input
-                type="text"
-                name="user_number"
-                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"
-                id="user_number"
-              />
+                {{ new_address_form.city }}
+                {{ new_address_form.city.errors }}
+{#              <input#}
+{#                type="text"#}
+{#                name="user_number"#}
+{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
+{#                id="user_number"#}
+{#              />#}
             </div>
             <div>
               <label for="user_name">
-                نام
+                آدرس
                 <strong class="text-primary">*</strong>
               </label>
-              <input
-                type="text"
-                name="user_name"
-                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"
-                id="user_name"
-              />
+                {{ new_address_form.address }}
+                {{ new_address_form.address.errors }}
+{#              <input#}
+{#                type="text"#}
+{#                name="user_name"#}
+{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
+{#                id="user_name"#}
+{#              />#}
             </div>
             <div>
               <label for="user_last_name">
-                نام خانوادگی
-                <strong class="text-primary">*</strong>
+                کد پستی
+              <strong class="text-lowGreenColor">(اختیاری)</strong>
               </label>
-              <input
-                type="text"
-                name="user_last_name"
-                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"
-                id="user_last_name"
-              />
+                {{ new_address_form.postalcode }}
+                {{ new_address_form.postalcode.errors }}
+{#              <input#}
+{#                type="text"#}
+{#                name="user_last_name"#}
+{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
+{#                id="user_last_name"#}
+{#              />#}
+            </div>
+            <div>
+              <label for="user_last_name">
+                یادداشت
+              <strong class="text-lowGreenColor">(اختیاری)</strong>
+              </label>
+                {{ new_address_form.note }}
+                {{ new_address_form.note.errors }}
+{#              <input#}
+{#                type="text"#}
+{#                name="user_last_name"#}
+{#                class="border-submitPageColorBorderLowBlack border-2 w-full py-2 px-2 outline-none focus:border-submitPageColorBorderBlue transition-all"#}
+{#                id="user_last_name"#}
+{#              />#}
             </div>
             <div
               class="flex gap-2 px-4 z-10 bg-whiteColor w-full justify-end items-center py-2"
             >
               <button
+                type="button"
                 id="closeAddresCont"
                 class="bg-lowerGray py-3 px-5 rounded-md"
               >
                 بستن
               </button>
               <button
+                type="submit"
                 id="setAddres"
                 class="bg-redColor opacity-80 hover:opacity-100 transition-opacity duration-300 text-whiteColor py-3 px-5 rounded-md"
               >
                 ثبت
               </button>
             </div>
-          </div>
+          </form>
+            
+            
+            
         </div>
       </section>
     </main>
@@ -381,43 +483,10 @@
 
 
 {% block scripts %} 
-     <script>
+        <script>
       let interValOpenEditCard = null;
-      function closeSectionFilters(interVal, filterCont, classes) {
-        if (interVal) clearInterval(interVal);
-        filterCont.removeClass(classes[0]);
-        filterCont.addClass(classes[1]);
-        interVal = setTimeout(() => {
-          interVal = null;
-          filterCont.removeClass(classes[1]);
-          filterCont.addClass(classes[2]);
-          document.body.classList.remove("overflow-hidden");
-        }, 500);
-      }
-
-      $("#addressCont").on("click", function () {
-        $("#editCard").addClass("showFilterSec");
-        $("#editCard").removeClass("hidden");
-        $("#editCard").addClass("flex");
-        document.body.classList.add("overflow-hidden");
-      });
-      $("#editCard ,  #closeAddresCont,#closeWindow ").on(
-        "click",
-        function (e) {
-          if (
-            this === e.target ||
-            this.id === "closeAddresCont" ||
-            this.id === "closeWindow"
-          ) {
-            closeSectionFilters(interValOpenEditCard, $("#editCard"), [
-              "showFilterSec",
-              "hideFilterSec",
-              "hidden",
-            ]);
-          }
-        }
-      );
       let isTouchLi = false;
+
       function clickLiHand(
         nameCont,
         li,
@@ -455,6 +524,59 @@
           $("#statusSelectCont")[0].scrollHeight + "px"
         );
       }
+
+      (async function () {
+        try {
+          let res = await (
+            await fetch("../../assets/json/yazdCity.json")
+          ).json();
+          let option = $("<option value=''>شهر</option>");
+          $("#user_city").empty();
+          $("#user_city").append(option);
+          res.forEach((item) => {
+            option = $(
+              `<option value='${item.cityName}'>${item.cityName}</option>`
+            );
+            $("#user_city").append(option);
+          });
+        } catch {}
+      })();
+
+      function closeSectionFilters(interVal, filterCont, classes) {
+        if (interVal) clearInterval(interVal);
+        filterCont.removeClass(classes[0]);
+        filterCont.addClass(classes[1]);
+        interVal = setTimeout(() => {
+          interVal = null;
+          filterCont.removeClass(classes[1]);
+          filterCont.addClass(classes[2]);
+          document.body.classList.remove("overflow-hidden");
+        }, 500);
+      }
+
+      $("#addressCont").on("click", function () {
+        $("#editCard").addClass("showFilterSec");
+        $("#editCard").removeClass("hidden");
+        $("#editCard").addClass("flex");
+        document.body.classList.add("overflow-hidden");
+      });
+      $("#editCard ,  #closeAddresCont,#closeWindow ").on(
+        "click",
+        function (e) {
+          if (
+            this === e.target ||
+            this.id === "closeAddresCont" ||
+            this.id === "closeWindow"
+          ) {
+            closeSectionFilters(interValOpenEditCard, $("#editCard"), [
+              "showFilterSec",
+              "hideFilterSec",
+              "hidden",
+            ]);
+          }
+        }
+      );
+
       new ResizeObserver(resizestatusSelectCont).observe(
         $("#statusSelectCont")[0]
       );
@@ -510,7 +632,12 @@
           );
         }
       });
+
+      $("#user_dsc_textArea").on("keyup", function () {
+        $("#user_dsc").val(encodeURIComponent(this.value.trim()));
+      });
     </script>
+    
 {% endblock %}
 
 

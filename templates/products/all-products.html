@@ -270,37 +270,65 @@
                   
                   
                   
-                    <div class="price">
-                        <div class="text-[12px] flex gap-2">
-                    
-                            {% if product.discount %}
-                          <del class="text-mdGray">
-                            {{ product.price }}
-                            <span>تومان</span>
-                          </del>
-                          <span
-                            class="px-2 text-sm text-whiteColor bg-primary rounded-2xl"
-                            >{{ product.discount }}%</span
-                          >
-                            {% endif %}
-                        </div>
-                    </div>
-              
-              
-              
                 <div
-                  class="flex absolute sm:static left-[10px] bottom-[10px] flex-col sm:flex-row sm:items-center items-end sm:w-full justify-between"
+                  class="flex absolute sm:static left-[10px] bottom-[10px] gap-2 sm:items-center items-end sm:w-full justify-between"
                 >
-                  <span class="sm:hidden inline-block">{{ product.discounted_price }} تومان </span>
+                  <div class="sm:hidden inline-block">
+                  
+                  
+                    {% if product.discount %}
+                    <div class="text-[12px] flex gap-2">
+                      <del class="text-mdGray">
+                        {{ product.price }}
+                        <span> تومان </span>
+                      </del>
+                      <span
+                        class="px-2 text-sm text-whiteColor bg-primary rounded-2xl"
+                        >{{ product.discount }}%</span
+                      >
+                    </div>
+                    <span>{{ product.discounted_price }} تومان </span>
+                      {% else %}
+                            
+                    <span>{{ product.discounted_price }} تومان </span>
+                            
+                      {% endif %}
+                  </div>  
                   <a
                     href="{% url 'products:product_detail' product.id %}"
                     class="p-3 flex justify-center items-center bg-primary text-whiteColor rounded-md"
                   >
                     <i class="fa fa-plus"></i>
                   </a>
-                  <span class="sm:inline-block hidden">{{ product.discounted_price }} تومان </span>
+                    
+                
+                  <div class="sm:inline-block hidden">
+                  
+                    {% if product.discount %}
+                    <div class="text-[12px] flex gap-2">
+                      <del class="text-mdGray">
+                        {{ product.price }}
+                        <span> تومان </span>
+                      </del>
+                      <span
+                        class="px-2 text-sm text-whiteColor bg-primary rounded-2xl"
+                        >{{ product.discount }}%</span
+                      >
+                    </div>
+                    <span>{{ product.discounted_price }} تومان </span>
+                        
+                  {% else %}
+                    <span>{{ product.discounted_price }} تومان </span>
+
+                  {% endif %}
+                  </div>
+                    
+                    
+                    
                 </div>
               </div>
+			  
+			  
                 {% endfor %}
                 
                 

@@ -12,11 +12,15 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ['code', 'user', 'status', 'get_price', 'created']
     list_filter = ['status', 'created']
     inlines = [OrderItemInline]
-    readonly_fields = ['get_price', 'code']
+    readonly_fields = ['get_price', 'code', 'get_full_address']
 
     def get_price(self, obj):
         return obj.get_price()
-    get_price.short_description = 'قیمت کل'
+    get_price.short_description = 'قیمت کل با احتساب هزینه ارسال'
+
+    def get_full_address(self, obj):
+        return obj.address.get_full_address()
+    get_full_address.short_description = 'آدرس'
 
 
 @admin.register(Coupon)

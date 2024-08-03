@@ -87,8 +87,8 @@ class ProductFeatureInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'discount', 'quantity', 'category', 'active', 'is_in_special_category', 'created')
-    list_filter = ('category', 'is_in_special_category', 'brand', 'active', 'created')
+    list_display = ('name', 'price', 'discount', 'quantity', 'category', 'active', 'created')
+    list_filter = ('category', 'brand', 'active', 'created')
     search_fields = ('name', 'description')
     inlines = [ProductImageInline, ProductFeatureInline]
     autocomplete_fields = ['brand', 'category']
